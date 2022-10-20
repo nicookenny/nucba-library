@@ -5,11 +5,14 @@ const router = Router();
 
 router.post('/', UsersController.create);
 
-router.get('/');
-router.get('/:ID');
+router.get('/', UsersController.get);
+router.get('/:ID', UsersController.getID);
 
 router.patch('/:ID');
 
 router.delete('/:ID');
 
 export default router;
+
+
+// router.get('/') y router.get('/:ID');

@@ -56,4 +56,21 @@ export class UsersService {
       return { sucess: false, error: 'Hubo un error' };
     }
   }
+  public static async get(){
+    try {
+      const data = await prisma.user.findMany()
+      return {success: true, data}
+    } catch (error) {
+      return {success: false, error: 'Hubo un error'}
+    }
+  }
+  public static async getID(id: any){
+    try {
+      const data = await prisma.user.findUnique({where:{id}
+      })
+      return {success: true, data}
+    } catch (error) {
+      return {success: false, error: 'Hubo un error'}
+    }
+  }
 }

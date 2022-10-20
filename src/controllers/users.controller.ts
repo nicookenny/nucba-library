@@ -30,4 +30,14 @@ export class UsersController {
 
     res.status(created.success ? 200 : 400).send(created);
   }
+
+  public static async get(req: Request, res: Response){
+    const getData = await UsersService.get()
+    res.status(getData.success ? 200 : 400).send(getData)
+  }
+  public static async getID(req: Request, res: Response){
+    const {ID} = req.params
+    const getData = await UsersService.getID(ID)
+    res.status(getData.success ? 200 : 400).send(getData)
+  }
 }
