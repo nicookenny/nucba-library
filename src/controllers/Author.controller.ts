@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { AuthorService } from '../services/Author.service';
+import { AuthorService } from '../services/authors.service';
 
 export class AuthorsController {
   constructor() {}

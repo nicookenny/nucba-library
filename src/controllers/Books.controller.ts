@@ -7,7 +7,14 @@ export class BooksController {
   public static async create(req: Request, res: Response) {
     const { title, synopsis, type, sellPrice, loanPrice, authorID } = req.body;
 
-    const created = await BooksService.create({ title, synopsis, type, sellPrice, loanPrice, authorID });
+    const created = await BooksService.create({
+      title,
+      synopsis,
+      type,
+      sellPrice,
+      loanPrice,
+      authorID,
+    });
 
     res.status(created.success ? 201 : 400).send(created);
   }
