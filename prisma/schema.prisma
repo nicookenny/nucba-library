@@ -75,7 +75,7 @@ model Book {
   authorId Int
 
   editorials EditorialBooks[]
-  categories Category[]       @relation("categories_books")
+  categories categories_books[]
 
   loans Loan[]
   sells Sell[]
@@ -110,11 +110,20 @@ model EditorialBooks {
   @@id([bookId, editorialId])
 }
 
+model categories_books {
+  book       Book     @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  bookId     Int
+  categories Category @relation(fields: [categoryID], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  categoryID Int
+
+  @@id([bookId, categoryID])
+}
+
 model Category {
-  id          Int    @id @default(autoincrement())
+  id          Int                @id @default(autoincrement())
   name        String
   description String
-  books       Book[] @relation("categories_books")
+  books       categories_books[]
 }
 
 // LOANS y SELLS

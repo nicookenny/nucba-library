@@ -6,6 +6,7 @@ import { PrismaClient } from '@prisma/client';
 import usersRouter from './routes/users.routes';
 import booksRouter from './routes/books.routes';
 import authorsRouter from './routes/authors.routes';
+import categoryRouter from './routes/categories.routes';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -20,6 +21,7 @@ server.use(cors());
 server.use('/users', usersRouter);
 server.use('/books', booksRouter);
 server.use('/authors', authorsRouter);
+server.use('/categories', categoryRouter);
 
 server.listen(3000, () => {
   console.log('Running on http://localhost:3000');

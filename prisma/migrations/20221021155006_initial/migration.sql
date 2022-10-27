@@ -82,6 +82,15 @@ CREATE TABLE "EditorialBooks" (
 );
 
 -- CreateTable
+CREATE TABLE "categories_books" (
+    "bookId" INTEGER NOT NULL,
+    "categoryID" INTEGER NOT NULL,
+    "stock" INTEGER NOT NULL,
+
+    CONSTRAINT "categories_books_pkey" PRIMARY KEY ("bookId","categoryID")
+);
+
+-- CreateTable
 CREATE TABLE "Category" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
@@ -114,12 +123,6 @@ CREATE TABLE "Sell" (
     CONSTRAINT "Sell_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "_categories_books" (
-    "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL
-);
-
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -128,12 +131,6 @@ CREATE UNIQUE INDEX "Profile_userId_key" ON "Profile"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Address_profileId_key" ON "Address"("profileId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "_categories_books_AB_unique" ON "_categories_books"("A", "B");
-
--- CreateIndex
-CREATE INDEX "_categories_books_B_index" ON "_categories_books"("B");
 
 -- AddForeignKey
 ALTER TABLE "Profile" ADD CONSTRAINT "Profile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -151,6 +148,12 @@ ALTER TABLE "EditorialBooks" ADD CONSTRAINT "EditorialBooks_bookId_fkey" FOREIGN
 ALTER TABLE "EditorialBooks" ADD CONSTRAINT "EditorialBooks_editorialId_fkey" FOREIGN KEY ("editorialId") REFERENCES "Editorial"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "categories_books" ADD CONSTRAINT "categories_books_bookId_fkey" FOREIGN KEY ("bookId") REFERENCES "Book"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "categories_books" ADD CONSTRAINT "categories_books_categoryID_fkey" FOREIGN KEY ("categoryID") REFERENCES "Category"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Loan" ADD CONSTRAINT "Loan_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -161,9 +164,3 @@ ALTER TABLE "Sell" ADD CONSTRAINT "Sell_userId_fkey" FOREIGN KEY ("userId") REFE
 
 -- AddForeignKey
 ALTER TABLE "Sell" ADD CONSTRAINT "Sell_bookId_fkey" FOREIGN KEY ("bookId") REFERENCES "Book"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_categories_books" ADD CONSTRAINT "_categories_books_A_fkey" FOREIGN KEY ("A") REFERENCES "Book"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_categories_books" ADD CONSTRAINT "_categories_books_B_fkey" FOREIGN KEY ("B") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
