@@ -22,7 +22,7 @@ export class AuthorService {
       return { sucess: false, error: 'Hubo un error' };
     }
   }
-  public static async getAuthorById(id: number) {
+  public static async getAuthorById(id: string) {
     try {
       const author = await prisma.author.findUnique({ where: { id } });
 
@@ -31,7 +31,7 @@ export class AuthorService {
       return { sucess: false, error: 'Hubo un error' };
     }
   }
-  public static async updateAuthorById(id: number, data: any) {
+  public static async updateAuthorById(id: string, data: any) {
     try {
       const modified = await prisma.author.update({
         where: { id },
@@ -43,7 +43,7 @@ export class AuthorService {
       return { sucess: false, error: 'Hubo un error' };
     }
   }
-  public static async deleteAuthorById(id: number) {
+  public static async deleteAuthorById(id: string) {
     try {
       const deleted = await prisma.author.delete({ where: { id } });
 

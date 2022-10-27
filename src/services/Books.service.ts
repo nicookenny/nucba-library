@@ -37,7 +37,7 @@ export class BooksService {
       return { sucess: false, error: 'Hubo un error' };
     }
   }
-  public static async getBookById(id: number) {
+  public static async getBookById(id: string) {
     try {
       const book = await prisma.book.findMany({
         where: { id },
@@ -52,7 +52,7 @@ export class BooksService {
       return { sucess: false, error: 'Hubo un error' };
     }
   }
-  public static async updateBookById(id: number, data: any) {
+  public static async updateBookById(id: string, data: any) {
     try {
       const updatedBook = await prisma.book.update({
         where: { id },
@@ -65,7 +65,7 @@ export class BooksService {
       return { sucess: false, error: 'Hubo un error' };
     }
   }
-  public static async deleteBookById(id: number) {
+  public static async deleteBookById(id: string) {
     try {
       const deletedBook = await prisma.book.delete({ where: { id } });
 

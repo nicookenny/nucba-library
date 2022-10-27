@@ -24,17 +24,17 @@ export class BooksController {
     res.status(books.success ? 200 : 404).send(books);
   }
   public static async getBookById(req: Request, res: Response) {
-    const book = await BooksService.getBookById(+req.params.id);
+    const book = await BooksService.getBookById(req.params.id);
 
     res.status(book.success ? 200 : 404).send(book);
   }
   public static async updateBookById(req: Request, res: Response) {
-    const updatedBook = await BooksService.updateBookById(+req.params.id, req.body);
+    const updatedBook = await BooksService.updateBookById(req.params.id, req.body);
 
     res.status(updatedBook.success ? 200 : 404).send(updatedBook);
   }
   public static async deleteBookById(req: Request, res: Response) {
-    const deletedBook = await BooksService.deleteBookById(+req.params.id);
+    const deletedBook = await BooksService.deleteBookById(req.params.id);
 
     res.status(deletedBook.success ? 200 : 404).send(deletedBook);
   }
