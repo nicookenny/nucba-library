@@ -2,7 +2,7 @@ import { prisma } from '..';
 export class BooksService {
   constructor() {}
 
-  public static async create({ title, synopsis, type, sellPrice, loanPrice, authorID }: any) {
+  public static async create({ title, synopsis, type, sellPrice, loanPrice, authorID, categoryID }: any) {
     try {
       const created = await prisma.book.create({
         data: {
@@ -13,6 +13,17 @@ export class BooksService {
           loanPrice,
           author: {
             connect: { id: authorID },
+          },
+          categories: {
+            create: [
+              {
+                categories: {
+                  connect: {
+                    id: categoryID,
+                  },
+                },
+              },
+            ],
           },
         },
       });
@@ -28,6 +39,11 @@ export class BooksService {
       const books = await prisma.book.findMany({
         include: {
           author: {},
+          categories: {
+            select: {
+              categoryID: true,
+            },
+          },
         },
       });
 
@@ -43,6 +59,11 @@ export class BooksService {
         where: { id },
         include: {
           author: {},
+          categories: {
+            select: {
+              categoryID: true,
+            },
+          },
         },
       });
 

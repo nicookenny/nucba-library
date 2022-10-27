@@ -83,7 +83,6 @@ model Book {
   sells Sell[]
 }
 
-
 model Author {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
