@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -17,140 +17,116 @@ enum Role {
 
 //ADMIN o CLIENT
 model User {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  email String @unique
-
-  role Role
-
-  balance Float
-
-  profile Profile? @relation()
-
+  id        String   @id @default(uuid())
+  email     String   @unique
+  role      Role
+  balance   Float
+  profile   Profile? @relation()
   loans     Loan[]
   purchases Sell[]
 }
 
 model Profile {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
+  id        String   @id @default(cuid())
   firstname String
   lastname  String
-
-  dni   String
-  phone String
-
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @unique
-
-  address Address? @relation()
+  dni       String
+  phone     String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
+  address   Address? @relation()
 }
 
 model Address {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  street  String
-  number  Int
-  zipCode String
-
+  id        String  @id @default(uuid())
+  street    String
+  number    Int
+  zipCode   String
   floor     Int
   apartment String
-
-  city String
-
+  city      String
   profile   Profile @relation(fields: [profileId], references: [id])
   profileId String  @unique
 }
 
 // BOOKS
 model Book {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  title    String
-  synopsis String
-  type     String
-
-  sellPrice Float
-  loanPrice Float
-
-  author   Author @relation(fields: [authorId], references: [id])
-  authorId String
-
+  id         Int                @id @default(autoincrement())
+  title      String
+  synopsis   String
+  type       String
+  sellPrice  Float
+  loanPrice  Float
+  author     Author             @relation(fields: [authorId], references: [id])
+  authorId   Int
   editorials EditorialBooks[]
-
-  categories    Category[] @relation(fields: [categoriesIds], references: [id])
-  categoriesIds String[]   @db.ObjectId
-
-  loans Loan[]
-  sells Sell[]
+  categories categories_books[]
+  loans      Loan[]
+  sells      Sell[]
 }
 
 model Author {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
+  id          Int    @id @default(autoincrement())
   name        String
   nationality String
-
-  books Book[]
+  books       Book[]
 }
 
 model Editorial {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  id    Int              @id @default(autoincrement())
   name  String
   phone String
   email String
-
   books EditorialBooks[]
 }
 
 model EditorialBooks {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
   book        Book      @relation(fields: [bookId], references: [id])
-  bookId      String
+  bookId      Int
   editorial   Editorial @relation(fields: [editorialId], references: [id])
-  editorialId String
+  editorialId Int
+  stock       Int
 
-  stock Int
+  @@id([bookId, editorialId])
+}
+
+model categories_books {
+  book       Book     @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  bookId     Int
+  categories Category @relation(fields: [categoryID], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  categoryID Int
+
+  @@id([bookId, categoryID])
 }
 
 model Category {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  id          Int                @id @default(autoincrement())
   name        String
   description String
-
-  books    Book[]   @relation(fields: [booksIds], references: [id])
-  booksIds String[] @db.ObjectId
+  books       categories_books[]
 }
 
 // LOANS y SELLS
 model Loan {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
+  id      String     @id @default(uuid())
   date    DateTime
   dueDate DateTime
-
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-
-  book   Book   @relation(fields: [bookId], references: [id])
-  bookId String
-
-  cost Float
-
-  status LoanStatus @default(PENDING)
+  user    User       @relation(fields: [userId], references: [id])
+  userId  String
+  book    Book       @relation(fields: [bookId], references: [id])
+  bookId  Int
+  cost    Float
+  status  LoanStatus @default(PENDING)
 }
 
 model Sell {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  user   User   @relation(fields: [userId], references: [id])
+  id     String   @id @default(uuid())
+  user   User     @relation(fields: [userId], references: [id])
   userId String
-
-  book   Book   @relation(fields: [bookId], references: [id])
-  bookId String
-
+  book   Book     @relation(fields: [bookId], references: [id])
+  bookId Int
   amount Float
-
-  date DateTime
+  date   DateTime
 }
 
 enum LoanStatus {

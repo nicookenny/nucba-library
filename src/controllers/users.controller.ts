@@ -32,12 +32,12 @@ export class UsersController {
 		res.status(created.success ? 200 : 400).send(created);
 	}
 
-	public static async get(req: Request, res: Response) {
+	public static async getAll(req: Request, res: Response) {
 		console.log({ req });
 		const getData = await UsersService.getAll();
 		res.status(getData.success ? 200 : 400).send(getData);
 	}
-	public static async getID(req: Request, res: Response) {
+	public static async getById(req: Request, res: Response) {
 		const { ID } = req.params;
 		const getData = await UsersService.getOneById(ID);
 		res.status(getData.success ? 200 : 400).send(getData);

@@ -4,9 +4,9 @@ import { AuthorsController } from '../controllers';
 const router = Router();
 
 router.post('/', AuthorsController.create);
-router.get('/', AuthorsController.getAllAuthors);
-router.get('/:id', AuthorsController.getAuthorById);
-router.put('/:id', AuthorsController.updateAuthorById);
-router.delete('/:id', AuthorsController.deleteAuthorById);
+router.get('/', AuthorsController.getAll);
+router.get('/:id', AuthorsController.getById);
+router.put('/:id', AuthorsController.updateOne);
+router.delete('/:id', AuthorsController.deleteOne);
 
 export default router;
