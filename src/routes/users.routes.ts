@@ -11,7 +11,6 @@ router.get('/', authenticate, havePermission(['USUARIOS/VER_LISTADO', 'PRESTAMOS
 router.get('/:ID', UsersController.getById);
 
 router.patch('/:ID');
-
 router.delete('/:ID');
 
 export default router;
