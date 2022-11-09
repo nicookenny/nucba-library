@@ -15,15 +15,29 @@ enum Role {
   CLIENT
 }
 
+model Permission {
+  name      String   @id @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users User[]
+}
+
 //ADMIN o CLIENT
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
+  id String @id @default(uuid())
+
+  email    String @unique
+  password String @default("")
+
   role      Role
   balance   Float
   profile   Profile? @relation()
   loans     Loan[]
   purchases Sell[]
+
+  permissions Permission[]
+  Book        Book[]
 }
 
 model Profile {
@@ -63,6 +77,9 @@ model Book {
   categories categories_books[]
   loans      Loan[]
   sells      Sell[]
+
+  createdBy User   @relation(fields: [userId], references: [id])
+  userId    String
 }
 
 model Author {

@@ -4,8 +4,10 @@ import { BooksService } from '../services/Books.service';
 export class BooksController {
 	constructor() {}
 
-	public static async create(req: Request, res: Response) {
+	public static async create(req: any, res: Response) {
 		const { title, synopsis, type, sellPrice, loanPrice, author, categories, editorials } = req.body;
+
+		const { user } = req;
 
 		const created = await BooksService.create({
 			title,
@@ -16,6 +18,7 @@ export class BooksController {
 			author,
 			categories,
 			editorials,
+			user: user.id,
 		});
 
 		res.status(created.success ? 201 : 400).send(created);

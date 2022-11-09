@@ -2,10 +2,23 @@ import { prisma } from '..';
 export class BooksService {
 	constructor() {}
 
-	public static async create({ title, synopsis, type, sellPrice, loanPrice, author, categories, editorials }: any) {
+	public static async create({
+		title,
+		synopsis,
+		type,
+		sellPrice,
+		loanPrice,
+		author,
+		categories,
+		editorials,
+		user,
+	}: any) {
 		[1, 2, 3];
 		try {
 			const created = await prisma.book.create({
+				include: {
+					createdBy: true,
+				},
 				data: {
 					title,
 					synopsis,
@@ -17,6 +30,11 @@ export class BooksService {
 					},
 					categories: {
 						connect: categories.map((category: any) => ({ id: category })),
+					},
+					createdBy: {
+						connect: {
+							id: user,
+						},
 					},
 					editorials: {
 						create: editorials.map(({ id, stock }: { id: any; stock: number }) => ({

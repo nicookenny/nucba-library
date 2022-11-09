@@ -3,7 +3,7 @@ import { UserRoles } from '../entities/Users/roles.enum';
 export class UsersService {
 	constructor() {}
 
-	public static async create({ email, profile }: any) {
+	public static async create({ email, profile, password = '' }: any) {
 		try {
 			const { firstname, lastname, dni, phone, address } = profile;
 			const { street, number, zipCode, floor, apartment, city } = address;
@@ -12,6 +12,7 @@ export class UsersService {
 					balance: 0,
 					role: UserRoles.CLIENT,
 					email,
+					password,
 					profile: {
 						create: {
 							firstname,
@@ -55,7 +56,7 @@ export class UsersService {
 			return { sucess: false, error: 'Hubo un error' };
 		}
 	}
-	
+
 	public static async getAll() {
 		try {
 			const data = await prisma.user.findMany({});
@@ -68,9 +69,31 @@ export class UsersService {
 	}
 	public static async getOneById(id: any) {
 		try {
-			const data = await prisma.user.findUnique({ where: { id } });
+			const data = await prisma.user.findUnique({
+				where: { id },
+				include: {
+					permissions: true,
+				},
+			});
 			return { success: true, data };
 		} catch (error) {
+			return { success: false, error: 'Hubo un error' };
+		}
+	}
+
+	public static async getOneByEmail(email: string) {
+		try {
+			const data = await prisma.user.findUnique({
+				where: {
+					email,
+				},
+			});
+			if (!data) {
+				throw data;
+			}
+			return { success: true, data };
+		} catch (error) {
+			console.log({ error });
 			return { success: false, error: 'Hubo un error' };
 		}
 	}

@@ -8,6 +8,8 @@ import booksRouter from './routes/books.routes';
 import authorsRouter from './routes/authors.routes';
 import categoryRouter from './routes/categories.routes';
 import editorialRoutes from './routes/editorials.routes';
+import permissionsRoutes from './routes/permissions.routes';
+import authRoutes from './routes/auth.routes';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -24,6 +26,8 @@ server.use('/books', booksRouter);
 server.use('/authors', authorsRouter);
 server.use('/categories', categoryRouter);
 server.use('/editorials', editorialRoutes);
+server.use('/permissions', permissionsRoutes);
+server.use('/auth', authRoutes);
 
 server.listen(3000, () => {
 	console.log('Running on http://localhost:3000');

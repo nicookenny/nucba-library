@@ -28,12 +28,10 @@ export class UsersController {
 			},
 		});
 
-
 		res.status(created.success ? 200 : 400).send(created);
 	}
 
 	public static async getAll(req: Request, res: Response) {
-		console.log({ req });
 		const getData = await UsersService.getAll();
 		res.status(getData.success ? 200 : 400).send(getData);
 	}
