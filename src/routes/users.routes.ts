@@ -8,9 +8,11 @@ router.post('/', UsersController.create);
 router.get('/', UsersController.get);
 router.get('/:ID', UsersController.getID);
 
-router.patch('/:ID');
+router.patch('/:ID', UsersController.update);
 
-router.delete('/:ID');
+router.delete('/:ID', UsersController.deleteUser);
+
+router.patch('/:ID/balance', UsersController.addBalance);
 
 export default router;
 
