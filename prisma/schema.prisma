@@ -15,24 +15,33 @@ enum Role {
   CLIENT
 }
 
+model Permission {
+  name      String   @id @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users User[]
+}
+
 //ADMIN o CLIENT
 model User {
-  id    String @id @default(uuid())
-  email String @unique
+  id String @id @default(uuid())
 
-  role Role
+  email    String @unique
+  password String @default("")
 
-  balance Float
-
-  profile Profile? @relation()
-
+  role      Role
+  balance   Float
+  profile   Profile? @relation()
   loans     Loan[]
   purchases Sell[]
+
+  permissions Permission[]
+  Book        Book[]
 }
 
 model Profile {
-  id String @id @default(uuid())
-
+  id        String   @id @default(cuid())
   firstname String
   lastname  String
 
@@ -43,59 +52,54 @@ model Profile {
   userId String @unique
 
   address Address? @relation()
+
 }
 
 model Address {
-  id String @id @default(uuid())
-
-  street  String
-  number  Int
-  zipCode String
-
+  id        String  @id @default(uuid())
+  street    String
+  number    Int
+  zipCode   String
   floor     Int
   apartment String
-
   city String
 
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
   profileId String  @unique
 }
 
 // BOOKS
 model Book {
-  id       Int    @id @default(autoincrement())
-  title    String
-  synopsis String
-  type     String
-
-  sellPrice Float
-  loanPrice Float
-
-  author   Author @relation(fields: [authorId], references: [id])
-  authorId Int
-
+  id         Int                @id @default(autoincrement())
+  title      String
+  synopsis   String
+  type       String
+  sellPrice  Float
+  loanPrice  Float
+  author     Author             @relation(fields: [authorId], references: [id])
+  authorId   Int
   editorials EditorialBooks[]
-  categories Category[]       @relation("categories_books")
+  categories categories_books[]
+  loans      Loan[]
+  sells      Sell[]
 
-  loans Loan[]
-  sells Sell[]
+  createdBy User   @relation(fields: [userId], references: [id])
+  userId    String
 }
 
 model Author {
-  id Int @id @default(autoincrement())
-
+  id          Int    @id @default(autoincrement())
   name        String
   nationality String
-
-  books Book[]
+  books       Book[]
 }
 
 model Editorial {
-  id    Int    @id @default(autoincrement())
+  id    Int              @id @default(autoincrement())
   name  String
   phone String
   email String
-
   books EditorialBooks[]
 }
 
@@ -104,17 +108,25 @@ model EditorialBooks {
   bookId      Int
   editorial   Editorial @relation(fields: [editorialId], references: [id])
   editorialId Int
-
-  stock Int
+  stock       Int
 
   @@id([bookId, editorialId])
 }
 
+model categories_books {
+  book       Book     @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  bookId     Int
+  categories Category @relation(fields: [categoryID], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  categoryID Int
+
+  @@id([bookId, categoryID])
+}
+
 model Category {
-  id          Int    @id @default(autoincrement())
+  id          Int                @id @default(autoincrement())
   name        String
   description String
-  books       Book[] @relation("categories_books")
+  books       categories_books[]
 }
 
 // LOANS y SELLS
@@ -133,20 +145,19 @@ model Loan {
   cost Float
 
   status LoanStatus @default(PENDING)
+
 }
 
 model Sell {
-  id String @id @default(uuid())
-
-  user   User   @relation(fields: [userId], references: [id])
+  id     String   @id @default(uuid())
+  user   User     @relation(fields: [userId], references: [id])
   userId String
-
-  book   Book @relation(fields: [bookId], references: [id])
+  book   Book     @relation(fields: [bookId], references: [id])
   bookId Int
-
   amount Float
 
   date DateTime @default(now())
+
 }
 
 enum LoanStatus {

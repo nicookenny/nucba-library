@@ -62,4 +62,5 @@ export class EditorialService {
             return { success: false, error: 'Hubo un error' };
         }
     }
+
 }

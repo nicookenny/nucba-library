@@ -1,12 +1,14 @@
 import { Router } from 'express';
 import { BooksController } from '../controllers';
+import { authenticate } from '../middlewares/authentication';
+import { havePermission } from '../middlewares/authorization';
 
 const router = Router();
 
-router.post('/', BooksController.create);
-router.get('/', BooksController.getAllBooks);
-router.get('/:id', BooksController.getBookById);
-router.put('/:id', BooksController.updateBookById);
-router.delete('/:id', BooksController.deleteBookById);
+router.post('/', authenticate, BooksController.create);
+router.get('/', BooksController.getAll);
+router.get('/:id', BooksController.getById);
+router.put('/:id', BooksController.updateOne);
+router.delete('/:id', BooksController.deleteOne);
 
 export default router;

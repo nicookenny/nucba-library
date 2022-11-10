@@ -9,6 +9,9 @@ import authorsRouter from './routes/authors.routes';
 import editorialRouter from './routes/editorials.routes'
 import sellRouter from './routes/sells.routes'
 import loanRouter from './routes/loan.routes'
+import categoryRouter from './routes/categories.routes';
+import permissionsRoutes from './routes/permissions.routes';
+import authRoutes from './routes/auth.routes';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -23,10 +26,13 @@ server.use(cors());
 server.use('/users', usersRouter);
 server.use('/books', booksRouter);
 server.use('/authors', authorsRouter);
-server.use('/editorial', editorialRouter)
 server.use('/sell', sellRouter)
 server.use('/loan', loanRouter)
+server.use('/categories', categoryRouter);
+server.use('/editorials', editorialRoutes);
+server.use('/permissions', permissionsRoutes);
+server.use('/auth', authRoutes);
 
 server.listen(3000, () => {
-  console.log('Running on http://localhost:3000');
+	console.log('Running on http://localhost:3000');
 });

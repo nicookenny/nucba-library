@@ -35,4 +35,5 @@ export class EditorialController {
 
         res.status(deleteUser.success ? 200 : 400).send(deleteUser)
     }
+
 }
