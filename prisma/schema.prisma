@@ -44,11 +44,15 @@ model Profile {
   id        String   @id @default(cuid())
   firstname String
   lastname  String
-  dni       String
-  phone     String
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @unique
-  address   Address? @relation()
+
+  dni   String
+  phone String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+
+  address Address? @relation()
+
 }
 
 model Address {
@@ -58,8 +62,10 @@ model Address {
   zipCode   String
   floor     Int
   apartment String
-  city      String
-  profile   Profile @relation(fields: [profileId], references: [id])
+  city String
+
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
   profileId String  @unique
 }
 
@@ -125,15 +131,21 @@ model Category {
 
 // LOANS y SELLS
 model Loan {
-  id      String     @id @default(uuid())
-  date    DateTime
-  dueDate DateTime
-  user    User       @relation(fields: [userId], references: [id])
-  userId  String
-  book    Book       @relation(fields: [bookId], references: [id])
-  bookId  Int
-  cost    Float
-  status  LoanStatus @default(PENDING)
+  id String @id @default(uuid())
+
+  date    DateTime @default(now())
+  dueDate DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  book   Book @relation(fields: [bookId], references: [id])
+  bookId Int
+
+  cost Float
+
+  status LoanStatus @default(PENDING)
+
 }
 
 model Sell {
@@ -143,7 +155,9 @@ model Sell {
   book   Book     @relation(fields: [bookId], references: [id])
   bookId Int
   amount Float
-  date   DateTime
+
+  date DateTime @default(now())
+
 }
 
 enum LoanStatus {
