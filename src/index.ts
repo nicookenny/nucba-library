@@ -33,6 +33,6 @@ server.use('/editorials', editorialRouter);
 server.use('/security', securityRoutes);
 server.use('/auth', authRoutes);
 
-server.listen(3000, () => {
-	console.log('Running on http://localhost:3000');
+server.listen(process.env.PORT, () => {
+	console.log('Running on http://localhost:', process.env.PORT);
 });
