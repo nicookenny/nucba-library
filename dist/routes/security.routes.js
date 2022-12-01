@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const Security_controller_1 = require("../controllers/Security.controller");
+const router = (0, express_1.Router)();
+router.post('/permissions', Security_controller_1.SecurityController.createPermission);
+router.get('/permissions', Security_controller_1.SecurityController.getPermissions);
+router.post('/groups', Security_controller_1.SecurityController.createGroup);
+router.get('/groups', Security_controller_1.SecurityController.getGroups);
+router.patch('/groups/:id', Security_controller_1.SecurityController.assignPermissionsToGroup);
+router.patch('/users/:id', Security_controller_1.SecurityController.assignGroupsToUser);
+exports.default = router;
