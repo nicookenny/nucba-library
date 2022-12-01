@@ -7,7 +7,7 @@ const router = Router();
 
 router.post('/', UsersController.create);
 
-router.get('/', authenticate, havePermission(['USUARIOS/VER_LISTADO', 'PRESTAMOS/ANULAR']), UsersController.getAll);
+router.get('/', UsersController.getAll);
 router.get('/:ID', UsersController.getById);
 
 router.patch('/:ID', UsersController.update);

@@ -1,15 +1,15 @@
 import { NextFunction, Request, Response } from 'express';
-import { PermissionsService } from '../services/permissions.service';
+import { SecurityService } from '../services/security.service';
 
 export const havePermission = (permissions: string[]) => (req: any, res: Response, next: NextFunction) => {
 	try {
 		const { user } = req;
 
-		const userPermissions = user.permissions.map((permission: any) => permission.name);
+		const userPermissions = user.groups.flatMap((group: any) =>
+			group.permissions.map((permission: any) => permission.name),
+		);
 
-		// ["PRESTAMOS/ANULAR","USUARIOS/VER_LISTADO"]
-
-		const canContinue = permissions.every((permission) => {
+		const canContinue = permissions.every((permission: any) => {
 			return userPermissions.includes(permission);
 		});
 

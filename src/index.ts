@@ -6,11 +6,11 @@ import { PrismaClient } from '@prisma/client';
 import usersRouter from './routes/users.routes';
 import booksRouter from './routes/books.routes';
 import authorsRouter from './routes/authors.routes';
-import editorialRouter from './routes/editorials.routes'
-import sellRouter from './routes/sells.routes'
-import loanRouter from './routes/loan.routes'
+import editorialRouter from './routes/editorials.routes';
+import sellRouter from './routes/sells.routes';
+import loanRouter from './routes/loan.routes';
 import categoryRouter from './routes/categories.routes';
-import permissionsRoutes from './routes/permissions.routes';
+import securityRoutes from './routes/security.routes';
 import authRoutes from './routes/auth.routes';
 
 import dotenv from 'dotenv';
@@ -26,11 +26,11 @@ server.use(cors());
 server.use('/users', usersRouter);
 server.use('/books', booksRouter);
 server.use('/authors', authorsRouter);
-server.use('/sell', sellRouter)
-server.use('/loan', loanRouter)
+server.use('/sell', sellRouter);
+server.use('/loan', loanRouter);
 server.use('/categories', categoryRouter);
-server.use('/editorials', editorialRoutes);
-server.use('/permissions', permissionsRoutes);
+server.use('/editorials', editorialRouter);
+server.use('/security', securityRoutes);
 server.use('/auth', authRoutes);
 
 server.listen(3000, () => {

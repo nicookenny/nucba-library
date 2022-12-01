@@ -32,8 +32,12 @@ export class UsersController {
 	}
 
 	public static async getAll(req: Request, res: Response) {
-		const getData = await UsersService.getAll();
-		res.status(getData.success ? 200 : 400).send(getData);
+		try {
+			const getData = await UsersService.getAll();
+			res.status(getData.success ? 200 : 400).send(getData);
+		} catch (error: any) {
+			res.status(error.status).json({ error: error.message });
+		}
 	}
 	public static async getById(req: Request, res: Response) {
 		const { ID } = req.params;
@@ -41,25 +45,24 @@ export class UsersController {
 		res.status(getData.success ? 200 : 400).send(getData);
 	}
 
-  public static async update(req: Request, res: Response){
-    const {ID} = req.params
-    const update = await UsersService.updateUser(ID, req.body)
+	public static async update(req: Request, res: Response) {
+		const { ID } = req.params;
+		const update = await UsersService.updateUser(ID, req.body);
 
-    res.status(update.success ? 200 : 400).send(update)
-  }
+		res.status(update.success ? 200 : 400).send(update);
+	}
 
-  public static async deleteUser(req: Request, res: Response){
-    const {ID} = req.params
-    const deleteUser =  await UsersService.deleteUser(ID)
+	public static async deleteUser(req: Request, res: Response) {
+		const { ID } = req.params;
+		const deleteUser = await UsersService.deleteUser(ID);
 
-    res.status(deleteUser.success ? 200 : 400).send(deleteUser)
-  }
+		res.status(deleteUser.success ? 200 : 400).send(deleteUser);
+	}
 
-  public static async addBalance(req: Request, res: Response) {
-    const {ID} = req.params
-    const {balance} = req.body
-    const addBalance = await UsersService.addBalance(ID, balance)
-    res.status(addBalance?.success ? 200 : 400).send(addBalance)
-  }
-
+	public static async addBalance(req: Request, res: Response) {
+		const { ID } = req.params;
+		const { balance } = req.body;
+		const addBalance = await UsersService.addBalance(ID, balance);
+		res.status(addBalance?.success ? 200 : 400).send(addBalance);
+	}
 }
